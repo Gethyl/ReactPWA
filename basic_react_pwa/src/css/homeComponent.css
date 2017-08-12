@@ -1,0 +1,16 @@
+ .mainHeader {
+    color:blue;
+    text-align: center;
+} 
+
+.rowFlex {
+    display:flex;
+    flex: 1 1 0;
+    justify-content: center;
+}
+
+.jokerGif{
+    border: 1px solid #000;
+    width:  75%;
+    height: 75%
+}
