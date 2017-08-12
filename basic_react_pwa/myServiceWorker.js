@@ -1,14 +1,10 @@
-
-
 (function() {
   'use strict';
 
   var staticFilesToCache = [
     '.',
     'index.html',
-    '/dist/vendor.bundle.js',
     '/dist/app.bundle.js',
-    '/dist/images/joker.gif',
     '/offline.html',
     'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
     'https://fonts.gstatic.com/s/roboto/v16/RxZJdnzeo3R5zSexge8UUVtXRa8TVwTICgirnJhmVJw.woff2'

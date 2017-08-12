@@ -4,24 +4,28 @@
   <meta charset="UTF-8">
   <title>React PWA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <meta name="theme-color" content="#666666"/>
   <link rel="manifest" href="/myManifest.json">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"> -->
 </head>
 <body>
-	<div id="app"></div>
-    <script src="/dist/vendor.bundle.js"></script>
-    <script src="/dist/app.bundle.js"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('myServiceWorker.js')
-          .then(function(registration) {
-            console.log('##Service Worker##  Service Worker registration successful with scope: ',
-            registration.scope);
-          })
-          .catch(function(err) {
-            console.log('##Service Worker##  Service Worker registration failed: ', err);
-          });
-      }
-    </script>
+  <div id="app"></div>
+  <noscript>
+    <div>Javascript is disabled and you may miss some of the cool stuff :(</div>
+  </noscript>
+  <!-- <script src="/dist/vendor.bundle.js"></script> -->
+  <script src="/dist/app.bundle.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('myServiceWorker.js')
+        .then(function(registration) {
+          console.log('##Service Worker##  Service Worker registration successful with scope: ',
+          registration.scope);
+        })
+        .catch(function(err) {
+          console.log('##Service Worker##  Service Worker registration failed: ', err);
+        });
+    }
+  </script>
 </body>
 </html>

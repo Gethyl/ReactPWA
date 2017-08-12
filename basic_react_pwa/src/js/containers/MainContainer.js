@@ -16,9 +16,9 @@ injectTapEventPlugin();
 export class Container extends React.Component {
   constructor(props){
     super(props)
-    this.closeJoker = this.closeJoker.bind(this)
+    this.fetchGithubButton = this.fetchGithubButton.bind(this)
     this.state = {
-        showJoker:true
+        getGithub:true
     }
   }
 
@@ -27,24 +27,24 @@ export class Container extends React.Component {
   componentDidUpdate(prevProps, prevState) {
   }
 
-  closeJoker(){
-      this.setState({showJoker:false})
+  fetchGithubButton(){
+      this.setState({getGithub:false})
 
   }
 
   render() {  
     return (
         <div className={styles.mainContainer}>
-            <AppBar position="static" color="default" className={styles.appBar}>
+             <AppBar position="static" color="default" className={styles.appBar}>
                  <Toolbar> 
                     <Typography type="title" color="inherit">
                         Learning about React Progressive Web Apps
                      </Typography> 
                  </Toolbar> 
-            </AppBar>
-            <Home showJoker={this.state.showJoker}/>
-            {!!this.state.showJoker && <Button className={styles.showGitHubButton} onClick={this.closeJoker} children="Click to Fetch Github Repo." color="primary"></Button>}
-            {!this.state.showJoker && <GitHubInfo/>}
+            </AppBar> 
+            <Home getGithub={this.state.getGithub}/>
+            {!!this.state.getGithub && <Button className={styles.showGitHubButton} onClick={this.fetchGithubButton} children="Click to Fetch Github Repo." color="primary"></Button>}
+            {!this.state.getGithub && <GitHubInfo/>}
         </div>
     )
   }

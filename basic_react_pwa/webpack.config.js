@@ -2,19 +2,13 @@ var debug = process.env.NODE_ENV !== "production";
 var webpack = require('webpack');
 var path = require('path');
 // const ExtractTextPlugin = require('extract-text-webpack-plugin')
-// const CompressionPlugin = require('compression-webpack-plugin')
 
 module.exports = {
   context: path.join(__dirname, "src"),
   devtool:  "inline-sourcemap",
   entry: {
-    bundle:"./js/client.js",
-    vendor: [
-      "material-ui","material-ui-icons", "react-tap-event-plugin",
-      "react","react-dom",
-      "react-redux","redux",
-      "react-router","react-router-dom", "redux-thunk"
-    ],
+    app:"./js/client.js",
+    // main:"./js/containers/MainContainer.js"
   }, 
   module: {
     loaders: [
@@ -44,16 +38,22 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/',
     //libraryTarget: "umd", //uncomment this if you want to build in UMD
-    filename: "app.bundle.js"
+    filename: '[name].bundle.js',
+    chunkFilename: '[id].bundle.js'
   },
   plugins: debug ? [
     // new ExtractTextPlugin({filename: '[name].css', allChunks: false}),
-     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' })
+    //  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' })
   ] : [
-    // new ExtractTextPlugin({filename: '[name].css', allChunks: false}),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+    //new ExtractTextPlugin({filename: '[name].css', allChunks: false}),
+    // new webpack.optimize.CommonsChunkPlugin({ name:'main' ,filename: '[name].bundle.js' }),
+    new webpack.optimize.UglifyJsPlugin({ 
+      mangle: false, 
+      sourcemap: false,
+      compress: {
+        warnings: false
+      }
+    }),
   ],
   devServer: {
     // historyApiFallback: true,

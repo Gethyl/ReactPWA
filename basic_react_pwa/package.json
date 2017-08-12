@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "webpack-dev-server  --inline --hot",
+    "start:PROD": " NODE_ENV=production webpack-dev-server  --inline --hot",
     "start:lazy": "webpack && webpack-dev-server --lazy"
   },
   "author": "Gethyl George",
