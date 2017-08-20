@@ -1,0 +1,19 @@
+
+.appBar { 
+    background-color: #2196f3 !important;
+    color: #fff !important;
+}
+
+.mainContainer {
+    padding: 10px;
+}
+
+.showGitHubButton{
+    position: fixed !important;
+    display: block !important;
+    width: 100%;
+    bottom:0 ;
+    left:0;
+    background-color: #2196f3 !important;
+    color: #fff !important; 
+}
