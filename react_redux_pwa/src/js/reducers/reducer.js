@@ -29,7 +29,7 @@ const reducer = (state, action) => {
 				loading:false,
 				newItem:'',
 				items: [
-					...state.items.splice(0,0,action.item),
+					...state.items.splice(0,0,action.res),
 					...state.items
 				]
 			}

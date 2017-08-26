@@ -75,7 +75,12 @@ export class Todo extends React.Component {
 					/>
 				</div>
 				<Divider />
-				{offlineLogs.length>0 && <div style={{background:'#000', color: 'orange' }}>You seem to have gone Offline :| </div>}
+				{offlineLogs.length>0 && <div style={{background:'red', color: 'orange', padding:'20px 10px' }}>
+							<div>You seem to have gone Offline :|</div>
+							<div>If you close your browser/app or refresh it,</div>
+							<div>   >> You will lose all the Actions as they are saved in-memory</div>
+							<div>   >> Your app's Redux state is persisted to localStorage and therefore you will have your store till you wipe your localStorage</div>	
+					 </div>}
 				<div style={{display:'flex',flexDirection:'row', flexWrap:'wrap'}}>
 						<div style={{flex:'1 1 auto'}}>
 							<h4 style={{textAlign:'center'}}>TODO Items</h4>
@@ -93,7 +98,6 @@ export class Todo extends React.Component {
 							<h4 style={{textAlign:'center'}}>Offline Log</h4>
 							<List>{offlineLogs.map((logMessage, index) => {
 								return <ListItem key={index} onClick={(event) => {
-									
 								}} >
 									<ListItemText primary={logMessage} />
 								</ListItem>

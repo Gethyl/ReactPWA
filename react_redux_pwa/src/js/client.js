@@ -126,11 +126,15 @@ const myReduxStoreEnhancer = () => (createStore) => (reducer, preloadedState) =>
  *                to be a middleware, but just to show you the possibility of using an 
  *                enhancer.)
  *****************************************************************************************/
+ 
+ const persistedStore = JSON.parse(localStorage.getItem('persistedStore'))||{}
  const store = createStore(
 	reducer,
-	JSON.parse(localStorage.getItem('persistedStore'))||{
+	{
+		...persistedStore,
 		newItem:'',
 		offlineLogs:new Array(),
+		randomNumber:null,
 	},
 	compose(
 		myReduxStoreEnhancer(),
