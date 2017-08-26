@@ -7,7 +7,7 @@ module.exports = {
   context: path.join(__dirname, "src"),
   devtool:  "inline-sourcemap",
   entry: {
-    app:"./js/client.js",
+    app:['babel-polyfill',"./js/client.js"],
     // main:"./js/containers/MainContainer.js"
   }, 
   module: {

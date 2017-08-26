@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 
 import styles from '../../css/mainContainer.css'
 import Home from '../components/Home'
-import GitHubInfo from '../components/GitHubInfo'
 import Todo from '../components/Todo'
 
 import AppBar from 'material-ui/AppBar'
@@ -15,7 +14,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
 
 const mapStateToProps = (state = {}) => {
-	// console.dir(state)
     return {...state};
 };
 
@@ -55,11 +53,10 @@ export class Container extends React.Component {
                      </Typography> 
                  </Toolbar> 
             </AppBar> 
+						&nbsp;
             <div>{this.props.randomNumber}</div>
-            <Button onClick={this.fetchRandomNumber} children="Click to Generate Random number." color="primary"></Button>
-            <Home getGithub={this.state.getGithub}/>
-            {/* {!!this.state.getGithub && <Button className={styles.showGitHubButton} onClick={this.fetchGithubButton} children="Click to Fetch Github Repo." color="primary"></Button>}
-            {!this.state.getGithub && <GitHubInfo/>} */}
+            <Button onClick={this.fetchRandomNumber} children="Click to Generate Random number." color="primary" raised={true}></Button>
+            <Home/>
 						<Todo/>
         </div>
     )

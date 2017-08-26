@@ -37,6 +37,7 @@ export class Todo extends React.Component {
 	componentDidMount(){
 		const {dispatch} = this.props
 
+		//TODO-GGK Move as async Action into action.js
     fetch('http://localhost:3000/api')
     .then(res => res.json())
     .then(res => {
@@ -51,7 +52,7 @@ export class Todo extends React.Component {
 
 
 	render() {
-		const { dispatch, items, newItem } = this.props
+		const { dispatch, items, newItem, offlineLogs, showOfflineBanner } = this.props
 
 		return (
 			<div>
@@ -74,15 +75,33 @@ export class Todo extends React.Component {
 					/>
 				</div>
 				<Divider />
-				{!!items && <List>{items.map((todo, key) => {
-						return <ListItem key={todo._id} style={todo.completed ? markCompleteStyle : {}} onClick={(event) => {
-											dispatch(toggleCompleteFlag(todo))
-							}} >
-									<ListItemText primary={todo.item} />
-							</ListItem>
-						})}
-					</List>
-				}				
+				{offlineLogs.length>0 && <div style={{background:'#000', color: 'orange' }}>You seem to have gone Offline :| </div>}
+				<div style={{display:'flex',flexDirection:'row', flexWrap:'wrap'}}>
+						<div style={{flex:'1 1 auto'}}>
+							<h4 style={{textAlign:'center'}}>TODO Items</h4>
+							{!!items && <List>{items.map((todo, key) => {
+									return <ListItem key={todo._id} style={todo.completed ? markCompleteStyle : {}} onClick={(event) => {
+														dispatch(toggleCompleteFlag(todo))
+										}} >
+												<ListItemText primary={todo.item} />
+										</ListItem>
+									})}
+								</List>
+							}	
+						</div>
+						{offlineLogs.length>0 && <div style={{flex:'2 1 auto', borderLeft:'2px solid #eee'}}>
+							<h4 style={{textAlign:'center'}}>Offline Log</h4>
+							<List>{offlineLogs.map((logMessage, index) => {
+								return <ListItem key={index} onClick={(event) => {
+									
+								}} >
+									<ListItemText primary={logMessage} />
+								</ListItem>
+							})}
+							</List>
+						</div>}
+				</div>
+							
 			</div>
 		);
 	}

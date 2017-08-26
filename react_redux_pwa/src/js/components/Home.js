@@ -9,12 +9,7 @@ const Home = (props) =>  {
 				padding:'10px 10px 30px'
 			}}>
             <h2 className={styles.mainHeader}>Let us learn PWA</h2>
-            {
-                props.getGithub && 
-                <div className={styles.rowFlex}>
-                    Click on the button below to fetch all my Github repos :-) 
-                </div>
-            }
+						<h4 style={{textAlign:'center'}}>We will learn how to handle PWA for React-Redux app</h4>
         </div>
     )
 }

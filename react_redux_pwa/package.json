@@ -8,12 +8,11 @@
     "start:PROD": " NODE_ENV=production webpack-dev-server  --inline --hot",
     "start:lazy": "webpack && webpack-dev-server --lazy",
     "server:dev": "nodemon --inspect --ignore src/ server.js"
-
   },
   "author": "Gethyl George",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.17.2",
     "css-loader": "^0.28.4",
     "express": "^4.15.4",
