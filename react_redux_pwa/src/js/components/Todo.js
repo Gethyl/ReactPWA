@@ -22,7 +22,6 @@ let robotFontStyle = {
 let markCompleteStyle = {
 	textDecoration: "line-through"
 }
-let socket
 const mapStateToProps = (state = {}) => {
 	// console.dir(state)
 	return { ...state };
@@ -71,7 +70,15 @@ export class Todo extends React.Component {
 					/>
 					<Button
 						children="Add todo" color="primary" raised={true}
-						onTouchTap={() => dispatch(addNewItem(newItem))}
+						onTouchTap={() => {
+								if (newItem !== ''){
+									dispatch(addNewItem(newItem))
+								}
+								else{
+									alert("Item cannot be blank!!")
+								}
+							}
+						}
 					/>
 				</div>
 				<Divider />

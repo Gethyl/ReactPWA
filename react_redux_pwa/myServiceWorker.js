@@ -2,8 +2,6 @@
 
 (function() {
   'use strict';
- 
-  self.importScripts('node_modules/localforage/dist/localforage.js')
 
   var staticFilesToCache = [
     '.',
@@ -12,40 +10,42 @@
     '/offline.html',
     'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
     'https://fonts.gstatic.com/s/roboto/v16/RxZJdnzeo3R5zSexge8UUVtXRa8TVwTICgirnJhmVJw.woff2'
-  ];
+	];
+	
+	var apiToCache = [
+		'http://localhost:3000/api'
+	]
 
   var staticCaches = 'my-appshell-cache';  //Will use Cache, falling back to Network.
   var apiCaches = "my-api-cache"; //Will use Cache then Network.
-	var apiForage = "my-api-db"
-
-  
-  // console.log('local forage ',localforage);
-
-  localforage.config({
-    driver: [localforage.INDEXEDDB,
-             localforage.LOCALSTORAGE],
-    name: apiForage,
-    storeName: 'my-indexeddb-store'
-  });
-
-  localforage.setItem('key1',{name:'Gethyl George', interest: "React Redux PWA"}).then(function(res){console.log('Key 1 resolved')})
+	
 
   self.addEventListener('install', function(event) {
     console.log('%c##Service Worker##',
                 'background: #008000	; color: #fff',
                 'Attempting to install service worker and cache static assets');
     event.waitUntil(
-      caches.open(staticCaches)
-            .then(function(cache) {
-              return cache.addAll(staticFilesToCache);
-            })
-            .then(function(){
-               self.skipWaiting().then(function(res){
-                 console.log('%c##Service Worker##',
-                  'background: #0D47A1; color:#fff',
-                  'Skip Waiting ran.....', res);
-               });
-            })
+			Promise.all([
+				caches.open(staticCaches)   //Static Assets
+					.then(function (cache) {
+						return cache.addAll(staticFilesToCache);
+					}),
+				caches.open(apiCaches)      //API for GET
+					.then(function (cache) {
+						return cache.addAll(apiToCache);
+					})
+			]).then(function () {
+				self.skipWaiting().then(function (res) {
+					console.log('%c##Service Worker##',
+						'background: #0D47A1; color:#fff',
+						'Skip Waiting ran.....', res);
+				});
+			})
+			.catch(function (error) {
+					console.log('%c##Service Worker##',
+						'background: #D50000; color:#fff',
+						'Install Step failed with errors', error);
+			})
     );
   });
 
@@ -54,7 +54,7 @@
                 'background: #008000	; color: #fff',
                 'Activating new service worker...');
 
-    var cacheWhitelist = [staticCaches,apiCaches];
+    var cacheWhitelist = [staticCaches, apiCaches];
 
     event.waitUntil(
       caches.keys().then(function(cacheNames) {
@@ -78,42 +78,69 @@
 
   /* if found in CACHE then return from CACHE else from NETWORK */
   self.addEventListener('fetch', function(event) {
-    // console.log('Fetch event for >>>> ', event.request.url);
-    event.respondWith(
-      caches.match(event.request)
-        .then(function(response) {
-          if (response) {
-            console.log('Found ', event.request.url, ' in cache');
-            return response;
-          }
+		
+		//Network first and then Cache Strategy
+		if (event.request.url.indexOf('/api') > -1 && event.request.method === "GET") {
+			event.respondWith(
+				fetch(event.request)
+					.then(function (networkResponse) {
+						return caches.match(event.request)
+							.then(function (response) {
+								caches.open(apiCaches).then(function(cache){
+									cache.put(event.request,networkResponse)
+								})
+								console.log('%c##Service Worker##',
+									'background: #FF9800	; color: #fff',
+									'Network request completed and updated the Cache for ', event.request.url,
+									'with Reponse', response);
 
-          console.log('%c##Service Worker##',
-                'background: #FF9800	; color: #fff',
-                'Not in Cache... Making Network request for ', event.request.url);
+								return networkResponse.clone();
+							});
+					})
+					.catch(function(error){
+						console.log('Error while fetch for api ====> ',error)
+						return caches.match(event.request)
+							.then(function (response) {
+								if (response) {
+									console.log('Found ', event.request.url, ' in cache');
+									return response;
+								}
 
-          return fetch(event.request)
-                  .then(function(response) {
-                    if (response.status === 404) {
-                      return caches.match('/offline.html');
-                    }
-                    //This code prevents caching Github api responses.
-                    if (event.request.url.indexOf('github') > -1 ) {
-                        console.log('%c ##Service Worker##',
-                          'background: #FF9800	; color: #fff',
-                          'GitHub API requests will not be cached from the Service Worker.');
-                        return response;
-                    }
 
-                    return response
-                  });
-        })
-        .catch(function(error) {
-          console.log('%c##Service Worker##',
-            'background: #D50000	; color: #fff',
-            'Failed to fetch', event.request.url);
-          return caches.match('/offline.html');
-        })
-    );
+							});
+					})
+			)
+		} 
+		//Cache first and then Network Strategy
+		else {
+			event.respondWith(
+				caches.match(event.request)
+					.then(function(response) {
+						if (response) {
+							console.log('Found ', event.request.url, ' in cache');
+							return response;
+						}
+
+						console.log('%c##Service Worker##',
+									'background: #FF9800	; color: #fff',
+									'Not in Cache... Making Network request for ', event.request.url);
+
+						return fetch(event.request)
+										.then(function(response) {
+											if (response.status === 404) {
+												return caches.match('/offline.html');
+											}
+											return response
+										});
+					})
+					.catch(function(error) {
+						console.log('%c##Service Worker##',
+							'background: #D50000	; color: #fff',
+							'Failed to fetch', event.request.url);
+						return caches.match('/offline.html');
+					})
+			);
+		}
   });
 
 })();

@@ -20,11 +20,11 @@ const mapStateToProps = (state = {}) => {
 export class Container extends React.Component {
   constructor(props){
     super(props)
-		this.fetchGithubButton = this.fetchGithubButton.bind(this)
-		this.fetchRandomNumber = this.fetchRandomNumber.bind(this)
-    this.state = {
-        getGithub:true
-    }
+		// this.fetchGithubButton = this.fetchGithubButton.bind(this)
+		// this.fetchRandomNumber = this.fetchRandomNumber.bind(this)
+    // this.state = {
+    //     getGithub:true
+    // }
   }
 
   componentDidMount(){}
@@ -32,16 +32,10 @@ export class Container extends React.Component {
   componentDidUpdate(prevProps, prevState) {
   }
 
-	fetchGithubButton() {
-		this.props.dispatch({ type: "TEST_FIRE", loading: false })
-
-		this.setState({ getGithub: false })
-
-	}
-  fetchRandomNumber() {
+  // fetchRandomNumber() {
 		
-		this.props.dispatch({type:"GENERATE_RANDOM_NUMBER",randomNumber:Math.random()})
-	}   
+	// 	this.props.dispatch({type:"GENERATE_RANDOM_NUMBER",randomNumber:Math.random()})
+	// }   
 
   render() {  
     return (
@@ -54,8 +48,8 @@ export class Container extends React.Component {
                  </Toolbar> 
             </AppBar> 
 						&nbsp;
-            <div>{this.props.randomNumber}</div>
-            <Button onClick={this.fetchRandomNumber} children="Click to Generate Random number." color="primary" raised={true}></Button>
+            {/* <div>{this.props.randomNumber}</div>
+            <Button onClick={this.fetchRandomNumber} children="Click to Generate Random number." color="primary" raised={true}></Button> */}
             <Home/>
 						<Todo/>
         </div>
