@@ -74,7 +74,7 @@ export const addNewItem = newItem => dispatch => {
 		dispatch(processQueuedAsyncActions({...asyncItem}))
 	}
 	else {
-		dispatch(addOfflineLogMessage(`Queuing action - toggleComplete. ${newItem} will be marked Complete/Pending`))
+		dispatch(addOfflineLogMessage(`Queuing action - addNewItem. ${newItem} will be added when you are back online ;-)`))
 		return { 
 			type: "PROCESS_WHEN_ONLINE", 
 			asyncItem:{...asyncItem}

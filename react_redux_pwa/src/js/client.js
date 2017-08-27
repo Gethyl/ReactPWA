@@ -66,29 +66,25 @@ window.addEventListener('offline',  (event)=>  store.dispatch(offlineDetected("Y
 const myReduxStoreEnhancer = () => (createStore) => (reducer, preloadedState) => {
 
 	const store = createStore(reducer, preloadedState)
-	let pendingActions = []
+	let pendingActions = []  //Storing Actions in-memory on going offline
 	const dispatch = async(action) => {
 		let actionReturned
 		console.log("%c:: MY-REDUX-STORE-ENHANCER :: Action ::", 'background:#006064; color:#fff' ,action)
 
-		// let pendingActions = null
-		if (action.type == "YOU_ARE_ONLINE"){
-			// debugger
+		if (action.type == "YOU_ARE_ONLINE"){ //Process all the queued up actions
 			pendingActions.forEach(action => {
-				// debugger
 				store.dispatch(processQueuedAsyncActions(action.asyncItem))
 			})
 			pendingActions = []
 			return actionReturned = store.dispatch({type:'OFFLINE_SYNC_COMPLETED'})
 		}
 		else {
-			actionReturned = store.dispatch(action)
+			actionReturned = store.dispatch(action) 
 
-			if (typeof actionReturned !== "function" && !!actionReturned){
+			if (typeof actionReturned !== "function" && !!actionReturned){ //adding to the in-memory queue to Process for later
 				 if (actionReturned.type == "PROCESS_WHEN_ONLINE"){
 						pendingActions.push(actionReturned)
 						console.log(actionReturned)
-						// debugger
 					}
 			}
 		}
